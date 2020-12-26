@@ -30,12 +30,10 @@ public class Status {
             CascadeType.DETACH,
             CascadeType.REFRESH })
     @JoinColumn(name = "user_id")
-//    @JsonIgnore
     private User user;
     @ManyToOne(fetch = FetchType.LAZY,cascade = {
             CascadeType.REFRESH })
     @JoinColumn(name = "location_id")
-//    @JsonIgnore
     private Location location;
     @Column(name = "isPined", nullable = false)
     private boolean isPined;

@@ -49,11 +49,6 @@ public class ProfileController {
         model.addAttribute("pinnedPost", pinnedPost);
         model.addAttribute("myPinnedPost", modelMapperUtil.getRequestedDtoList(statusService.getMyFinedPost(), StatusDto.class));
         model.addAttribute("errorMessage", false);
-//        model.addAttribute("myStatuses",  modelMapperUtil.getRequestedDtoList(statusService.getMyStatuses(), StatusDto.class));
-//        UserRegistrationDto userRegistrationDto = modelMapperUtil.getRequestedDto(statusService.getUserDetails(), UserRegistrationDto.class);
-//        model.addAttribute("user", userRegistrationDto);
-//        StatusDto statusDto = modelMapperUtil.getRequestedDto(new StatusDto(), StatusDto.class);
-//        model.addAttribute("status", statusDto);
         return "profile";
     }
     @GetMapping("/update")

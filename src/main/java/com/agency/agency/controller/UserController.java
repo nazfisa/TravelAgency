@@ -34,22 +34,6 @@ public class UserController {
         return "login";
     }
 
-//    @GetMapping("/")
-//    public String home() {
-//        return "redirect:/products/";
-//    }
-
-//    @GetMapping("/registration")
-//    public String showRegistrationForm(Model model) {
-//        model.addAttribute(new UserDto());
-//        return "admin_registration";
-//    }
-//
-//    @PostMapping("/registration")
-//    public String registerUserAccount(@ModelAttribute("user") UserDto userDto) {
-//        userService.save(userDto);
-//        return "redirect:/registration?success";
-//    }
 
     @InitBinder
     public void initBinder(WebDataBinder dataBinder){
