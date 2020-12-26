@@ -32,4 +32,8 @@ public class Location {
     private Set<Status> statuses;
     @Column(name = "isDeleted", nullable = false, columnDefinition = "boolean default false")
     private boolean isDeleted;
+
+    public Location(String name) {
+        this.name= name;
+    }
 }
