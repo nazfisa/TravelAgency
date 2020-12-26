@@ -33,8 +33,6 @@ public class Status {
 //    @JsonIgnore
     private User user;
     @ManyToOne(fetch = FetchType.LAZY,cascade = {
-            CascadeType.MERGE,
-            CascadeType.DETACH,
             CascadeType.REFRESH })
     @JoinColumn(name = "location_id")
 //    @JsonIgnore

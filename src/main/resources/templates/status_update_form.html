@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+<div th:replace="fragments/header:: header"/>
+
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li ><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/profiles/status}">Profile</a></li>
+                <li>
+                    <div class="navbar-text navbar-right">
+                        <form th:action="@{/logout}" method="post">
+                            <input type="submit" value="Logout"/>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="profile">
+                    <br></br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Profile Wall</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <form th:action="@{/profiles/save}"
+                                          th:object="${status}" method="POST">
+
+                                        <input type="hidden" th:field="*{id}" />
+                                        <div class="form-group">
+                                            <textarea class="form-control" th:field="*{content}" placeholder="Write on the wall"></textarea>
+                                        </div>
+
+                                        <div class="pull-right">
+
+                                            <div class="btn-group">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="optradio" th:field="*{isPrivate}" value="1">Private</label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="optradio" th:field="*{isPrivate}" value="0" >Public</label>
+                                            </div>
+
+
+                                            <div class="form-group mb-4 col-4">
+                                                <select type="text" th:field ="*{location.id}"  class="form-control">
+                                                    <option value="-1">choose..</option>
+                                                    <option th:each="location: ${locations}"
+                                                            th:value="${location.id}"
+                                                            th:text="${location.name}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-default">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- col-md-8 end -->
+
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="profile">
+
+                    <br></br>
+                </div>
+            </div><!-- col-md-8 end -->
+
+        </div>
+    </div>
+</section>
+
+
+<div th:replace="fragments/copyright:: copyright"/>
+
+<div th:replace="fragments/footer:: footer"/>
+</body>
+</html>

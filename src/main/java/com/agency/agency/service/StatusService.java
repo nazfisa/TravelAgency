@@ -1,5 +1,6 @@
 package com.agency.agency.service;
 
+import com.agency.agency.dto.StatusDto;
 import com.agency.agency.entity.Status;
 import com.agency.agency.entity.User;
 
@@ -22,5 +23,10 @@ public interface StatusService {
     User getUserDetails();
 
     List<Status> getMyStatuses();
+
+    String handleError(StatusDto statusDto);
+
+    List<Status> getMyFinedPost();
+
 
 }

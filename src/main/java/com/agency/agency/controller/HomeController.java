@@ -33,11 +33,10 @@ public class HomeController {
     private final LocationService locationService;
     @GetMapping("/")
     public String home(Model model){
-//        List<Location> locations = locationService.findAll();
+
         List<StatusDto>statusDtos = modelMapperUtil.getRequestedDtoList(statusService.findAll(), StatusDto.class);
         model.addAttribute("statuses", statusDtos);
-//        List<LocationDto>locationDtos = modelMapperUtil.getRequestedDtoList(locationService.findAll(), LocationDto.class);
-//        model.addAttribute("locations", locationDtos);
+
         return "index";
     }
 }

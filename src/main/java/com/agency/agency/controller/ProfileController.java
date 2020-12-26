@@ -6,7 +6,6 @@ import com.agency.agency.dto.LocationDto;
 import com.agency.agency.dto.StatusDto;
 import com.agency.agency.dto.UserRegistrationDto;
 import com.agency.agency.entity.Status;
-import com.agency.agency.entity.User;
 import com.agency.agency.service.LocationService;
 import com.agency.agency.service.StatusService;
 import com.agency.agency.utils.ModelMapperUtil;
@@ -18,8 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author : agency
@@ -37,23 +34,33 @@ public class ProfileController {
 
     @ModelAttribute
     public void init(Model model){
-
-        model.addAttribute("locations",  modelMapperUtil.getRequestedDtoList(locationService.findAll(), LocationDto.class));
-    }
-    @GetMapping("/status")
-    public String addStatus(Model model){
         model.addAttribute("myStatuses",  modelMapperUtil.getRequestedDtoList(statusService.getMyStatuses(), StatusDto.class));
         UserRegistrationDto userRegistrationDto = modelMapperUtil.getRequestedDto(statusService.getUserDetails(), UserRegistrationDto.class);
         model.addAttribute("user", userRegistrationDto);
         StatusDto statusDto = modelMapperUtil.getRequestedDto(new StatusDto(), StatusDto.class);
         model.addAttribute("status", statusDto);
+        model.addAttribute("locations",  modelMapperUtil.getRequestedDtoList(locationService.findAll(), LocationDto.class));
+    }
+    @GetMapping("/status")
+    public String addStatus(Model model){
+        boolean pinnedPost = false;
+        if(statusService.getMyFinedPost().size()>0)
+            pinnedPost = true;
+        model.addAttribute("pinnedPost", pinnedPost);
+        model.addAttribute("myPinnedPost", modelMapperUtil.getRequestedDtoList(statusService.getMyFinedPost(), StatusDto.class));
+        model.addAttribute("errorMessage", false);
+//        model.addAttribute("myStatuses",  modelMapperUtil.getRequestedDtoList(statusService.getMyStatuses(), StatusDto.class));
+//        UserRegistrationDto userRegistrationDto = modelMapperUtil.getRequestedDto(statusService.getUserDetails(), UserRegistrationDto.class);
+//        model.addAttribute("user", userRegistrationDto);
+//        StatusDto statusDto = modelMapperUtil.getRequestedDto(new StatusDto(), StatusDto.class);
+//        model.addAttribute("status", statusDto);
         return "profile";
     }
     @GetMapping("/update")
     public String update(@RequestParam("statusId") long id, Model model) {
-        Status status = statusService.findById(id);
-        model.addAttribute("status", modelMapperUtil.getRequestedDto(status, StatusDto.class));
-        return "profile";
+//        Status status = statusService.findById(id);
+        model.addAttribute("status", modelMapperUtil.getRequestedDto(statusService.findById(id), StatusDto.class));
+        return "status_update_form";
     }
 
     @PostMapping("/save")
@@ -62,9 +69,31 @@ public class ProfileController {
         if (result.hasErrors()) {
             return "profile";
         }
+//        if(!statusService.handleError(statusDto).isEmpty()){
+//            String a = statusService.handleError(statusDto);
+//            System.out.println(a);
+//            model.addAttribute("errorMessage", statusService.handleError(statusDto));
+//           return "redirect:/profiles/status";
+//        }
+
         statusService.save(modelMapperUtil.getRequestedDto(statusDto, Status.class));
         return "redirect:/profiles/status";
 
+    }
+    @GetMapping("/pinned")
+    public String getMyPinnedPost(@RequestParam("statusId") long id, Model model){
+        Status status = statusService.findById(id);
+        status.setPined(true);
+        statusService.save(status);
+        return "redirect:/profiles/status";
+    }
+
+    @GetMapping("/unPinned")
+    public String getMyUnPinnedPost(@RequestParam("statusId") long id, Model model){
+        Status status = statusService.findById(id);
+        status.setPined(false);
+        statusService.save(status);
+        return "redirect:/profiles/status";
     }
 
 

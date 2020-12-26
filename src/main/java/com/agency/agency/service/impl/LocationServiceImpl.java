@@ -44,10 +44,4 @@ public class LocationServiceImpl implements LocationService {
 
     }
 
-    @Override
-    public void deleteById(Long id) {
-        Location location = this.findById(id);
-        location.setDeleted(true);
-        this.save(location);
-    }
 }

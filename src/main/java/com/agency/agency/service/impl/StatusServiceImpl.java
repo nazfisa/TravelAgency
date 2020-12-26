@@ -1,5 +1,6 @@
 package com.agency.agency.service.impl;
 
+import com.agency.agency.dto.StatusDto;
 import com.agency.agency.entity.Status;
 import com.agency.agency.entity.User;
 import com.agency.agency.exception.exceptions.ResourceNotFoundException;
@@ -28,7 +29,7 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     public List<Status> findAll() {
-        return statusRepository.findAll();
+        return statusRepository.findAllByIsPrivateFalse();
     }
 
     @Override
@@ -45,30 +46,50 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     public void save(Status status) {
-        User user =this.getUserDetails();
+        User user = this.getUserDetails();
         status.setUser(user);
         statusRepository.save(status);
     }
 
     @Override
     public void deleteById(Long id) {
-        Status status = this.findById(id);
-        status.setDeleted(true);
-        this.save(status);
+//        Status status = this.findById(id);
+//        status.setDeleted(true);
+//        this.save(status);
     }
 
     @Override
     public User getUserDetails() {
-
         return userRepository.findByEmail(getUserName());
-
     }
 
     @Override
     public List<Status> getMyStatuses() {
         User user = this.getUserDetails();
-        return statusRepository.findAllByUserId(user.getId());
+        return statusRepository.findAllByUserIdAndIsPined(user.getId(), false);
     }
+
+
+    @Override
+    public String handleError(StatusDto statusDto) {
+            String errors="";
+            if(statusDto.getContent().isEmpty()){
+                errors = errors +" Plese give some status"+"\n";
+            }
+            if(statusDto.getLocation().equals("---")){
+                errors = errors +" Plese input location"+"\n";
+            }
+            return errors;
+
+    }
+
+    @Override
+    public List<Status> getMyFinedPost() {
+        User user = this.getUserDetails();
+        return statusRepository.findAllByUserIdAndIsPined(user.getId(), true);
+    }
+
+
 
 
     public String getUserName(){

@@ -25,7 +25,10 @@ public class Location {
     private Long id;
     @Column(name = "name")
     private String name;
-    @OneToMany(mappedBy="location", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="location", cascade = {
+            CascadeType.MERGE,
+            CascadeType.DETACH,
+            CascadeType.REFRESH })
     private Set<Status> statuses;
     @Column(name = "isDeleted", nullable = false, columnDefinition = "boolean default false")
     private boolean isDeleted;
