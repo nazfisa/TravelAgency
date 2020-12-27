@@ -13,6 +13,8 @@ import lombok.*;
 @AllArgsConstructor
 public class LocationDto {
 
+    
+    
     private Long id;
     private String name;
 
